@@ -1,318 +1,318 @@
-# UX-спецификация GiftGoals
+# GiftGoals UX Specification
 
-Документ описывает UX‑требования для веб‑приложения социального вишлиста GiftGoals на основе текущего PRD. Бизнес‑логика и роли берутся из `spec/PRD.md`.
+This document describes UX requirements for the GiftGoals social wishlist web application, based on the current PRD. Business logic and roles are defined in `spec/PRD.md`.
 
-## 1. Роли и общие принципы
+## 1. Roles and general principles
 
-- **Гость**:
-  - попадает на публичный вишлист по ссылке без авторизации;
-  - видит вишлист полностью (шапка, все подарки, статусы, прогресс сборов);
-  - не видит личностей резервистов и вкладчиков;
-  - не может резервировать подарки и вносить вклад — при попытке действия получает модальное окно с предложением войти или зарегистрироваться, оставаясь на текущей странице.
+- **Guest**:
+  - lands on a public wishlist via link without authentication;
+  - sees the wishlist fully (header, all gifts, statuses, collection progress);
+  - does not see identities of reservers and contributors;
+  - cannot reserve gifts or contribute — on attempt, receives a modal prompting to log in or sign up, staying on the same page.
 
-- **Друг (залогиненный пользователь, не владелец вишлиста)**:
-  - может открыть вишлист по публичной ссылке;
-  - видит всё то же, что гость;
-  - дополнительно может:
-    - резервировать обычные подарки;
-    - вносить вклад в групповой сбор по «дорогим» подаркам;
-    - (Phase 2) предлагать новые подарки владельцу;
-  - видит личности резервистов (имя/аватар), но не видит, кто и сколько внёс в сбор (только прогресс и, опционально, анонимное количество участников).
+- **Friend** (logged‑in user who is **not** the wishlist owner):
+  - can open a wishlist via public link;
+  - sees everything the Guest sees;
+  - additionally can:
+    - reserve regular gifts;
+    - contribute to collections for “expensive” gifts;
+    - (Phase 2) suggest new gifts to the owner;
+  - sees the reservers’ identities (name/avatar), but does not see who contributed how much (only progress and, optionally, an anonymous count of participants).
 
-- **Владелец вишлиста**:
-  - управляет своими вишлистами из личного кабинета (создание/редактирование/удаление);
-  - по публичной ссылке на свой вишлист:
-    - видит тот же контент, что Друг;
-    - не видит, кто резервировал и кто сколько внёс в сбор;
-    - **не имеет кнопок** «Зарезервировать» и «Скинуться» (не может участвовать в своём же вишлисте как Друг);
-  - (Phase 2) управляет очередью предложенных подарков.
+- **Wishlist owner**:
+  - manages own wishlists in a personal area (create/edit/delete);
+  - when opening their wishlist via public link:
+    - sees the same content as the Friend;
+    - does not see who reserved or who contributed and how much;
+    - **does not have** “Reserve” / “Contribute” buttons (cannot act as a Friend in their own wishlist);
+  - (Phase 2) manages the queue of suggested gifts.
 
-Общие принципы UX:
-- чётко показать, в какой роли сейчас пользователь (гость / друг / владелец);
-- не допускать потери контекста при логине/регистрации из публичного вишлиста;
-- минимизировать «тихие» отказы — любые ограничения должны сопровождаться понятными сообщениями.
+General UX principles:
+- clearly indicate the current user role (Guest / Friend / Owner);
+- avoid losing context on login/registration from a public wishlist;
+- minimise “silent” failures — any restriction must be accompanied by a clear message.
 
-## 2. Визуальный стиль и UI
+## 2. Visual style and UI
 
-Этот раздел дополняет PRD (`spec/PRD.md`) и UX‑потоки в этом документе. Здесь описаны визуальные решения (цвета, шрифты, отступы, компоненты и их состояния), на основе которых frontend‑разработчик может реализовать интерфейс.
+This section complements the PRD (`spec/PRD.md`) and UX flows in this document. It describes visual decisions (colors, typography, spacing, components and their states) that frontend developers can implement.
 
-### 2.1. Цветовая палитра
+### 2.1. Color palette
 
-- **Основные токены**:
-  - `color-primary` — #2563EB (насыщенный синий, основной цвет действий: основные кнопки, активные ссылки).
-  - `color-primary-soft` — #DBEAFE (мягкий фон для выделения блоков и состояний, связанных с primary).
-  - `color-accent` — #F97316 (оранжевый акцент: отдельные важные CTA, элементы прогресса).
-  - `color-success` — #16A34A (успех: подтверждения действий, завершённый сбор).
-  - `color-warning` — #FACC15 (предупреждения: недобор, лимиты, мягкие предупреждения).
-  - `color-danger` — #DC2626 (ошибки: невозможность резерва/вклада, критические сообщения).
-  - `color-neutral-900` — #0F172A (основной тёмный текст).
-  - `color-neutral-700` — #334155 (вторичный текст, подписи).
-  - `color-neutral-500` — #64748B (мутed текст, подсказки).
-  - `color-neutral-200` — #E5E7EB (границы, разделители).
-  - `color-neutral-50` — #F9FAFB (фон карточек и поверхностей).
-  - `color-background` — #FFFFFF (основной фон страницы).
-  - `color-border` — #E5E7EB (границы инпутов, карточек, модалок).
-  - `color-overlay` — rgba(15, 23, 42, 0.5) (фон под модалками).
+- **Core tokens**:
+  - `color-primary` — #2563EB (vivid blue, primary action color: main buttons, active links).
+  - `color-primary-soft` — #DBEAFE (soft background for highlighting primary‑related blocks and states).
+  - `color-accent` — #F97316 (orange accent: selected important CTAs, progress elements).
+  - `color-success` — #16A34A (success: confirmations, completed collections).
+  - `color-warning` — #FACC15 (warnings: underfunding, limits, soft alerts).
+  - `color-danger` — #DC2626 (errors: failed reserve/contribution, critical messages).
+  - `color-neutral-900` — #0F172A (primary dark text).
+  - `color-neutral-700` — #334155 (secondary text, labels).
+  - `color-neutral-500` — #64748B (muted text, hints).
+  - `color-neutral-200` — #E5E7EB (borders, dividers).
+  - `color-neutral-50` — #F9FAFB (card/surface background).
+  - `color-background` — #FFFFFF (page background).
+  - `color-border` — #E5E7EB (input/card/modal borders).
+  - `color-overlay` — rgba(15, 23, 42, 0.5) (backdrop for modals).
 
-- **Статусы подарков и сборов**:
-  - `status-free` — текст/иконка в `color-neutral-700`, фон по умолчанию.
-  - `status-reserved` — бейдж с фоном `color-primary-soft`, текстом `color-primary`.
-  - `status-collect-open` — прогресс‑бар в `color-primary`, фон прогресса в `color-neutral-200`.
-  - `status-collect-complete` — прогресс‑бар/бейдж в `color-success` с более насыщенной полосой.
-  - `status-collect-underfunded` — акцент `color-warning` (фон/иконка), текст нейтральный.
+- **Gift and collection statuses**:
+  - `status-free` — text/icon in `color-neutral-700`, default background.
+  - `status-reserved` — badge with background `color-primary-soft`, text `color-primary`.
+  - `status-collect-open` — progress bar in `color-primary`, track in `color-neutral-200`.
+  - `status-collect-complete` — progress bar/badge in `color-success` with a more saturated bar.
+  - `status-collect-underfunded` — accent `color-warning` (background/icon), neutral text.
 
-- **Темы**:
-  - На MVP используется **только светлая тема** (значения выше).
-  - Поддержка тёмной темы может быть добавлена позже как отдельное расширение (переопределение тех же токенов для тёмного фона).
+- **Themes**:
+  - MVP uses **only a light theme** (values above).
+  - Dark theme support can be added later as an extension (overriding the same tokens).
 
-### 2.2. Типографика
+### 2.2. Typography
 
-- **Базовый шрифт**:
-  - Семейство: system UI (например, `-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif`).
+- **Base font**:
+  - Family: system UI (e.g. `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`).
 
-- **Размеры и веса (токены)**:
+- **Sizes and weights (tokens)**:
   - `font-size-xs` — 0.75rem (12px);
   - `font-size-sm` — 0.875rem (14px);
-  - `font-size-md` — 1rem (16px, базовый текст);
+  - `font-size-md` — 1rem (16px, base text);
   - `font-size-lg` — 1.125rem (18px);
-  - `font-size-xl` — 1.5rem (24px, основные заголовки).
+  - `font-size-xl` — 1.5rem (24px, main headings).
   - `font-weight-regular` — 400;
   - `font-weight-medium` — 500;
   - `font-weight-semibold` — 600.
 
-- **Иерархия**:
-  - Заголовок страницы (H1): `font-size-xl`, `font-weight-semibold`, `color-neutral-900`.
-  - Подзаголовки блоков (H2/H3): `font-size-lg` или `font-size-md`, `font-weight-medium`.
-  - Текст карточек, формы: `font-size-md`, `font-weight-regular`, `color-neutral-900`.
-  - Подписи к полям, подсказки: `font-size-sm`, `color-neutral-500`.
-  - Текст ошибок: `font-size-sm`, `color-danger`, `font-weight-medium`.
-  - Текст статусов/бейджей: `font-size-xs` или `font-size-sm` в зависимости от контекста.
+- **Hierarchy**:
+  - Page title (H1): `font-size-xl`, `font-weight-semibold`, `color-neutral-900`.
+  - Section headings (H2/H3): `font-size-lg` or `font-size-md`, `font-weight-medium`.
+  - Card/form text: `font-size-md`, `font-weight-regular`, `color-neutral-900`.
+  - Field labels/hints: `font-size-sm`, `color-neutral-500`.
+  - Error text: `font-size-sm`, `color-danger`, `font-weight-medium`.
+  - Status/badge text: `font-size-xs` or `font-size-sm` depending on context.
 
-### 2.3. Сетка, отступы, радиусы, тени
+### 2.3. Layout, spacing, radii, shadows
 
-- **Сетка и spacing**:
-  - Базовый шаг: 4px.
-  - Токены:
+- **Grid and spacing**:
+  - Base step: 4px.
+  - Tokens:
     - `spacing-xs` — 4px;
     - `spacing-sm` — 8px;
     - `spacing-md` — 12px;
     - `spacing-lg` — 16px;
     - `spacing-xl` — 24px;
     - `spacing-2xl` — 32px.
-  - Принципы:
-    - вертикальный ритм между блоками строится на кратных `spacing-md`/`spacing-lg`;
-    - отступы внутри карточек — `spacing-md` по сторонам, между элементами — `spacing-sm`/`spacing-md`.
+  - Principles:
+    - vertical rhythm between sections is built on multiples of `spacing-md`/`spacing-lg`;
+    - padding inside cards — `spacing-md` on sides, `spacing-sm`/`spacing-md` between elements.
 
-- **Радиусы**:
-  - `radius-sm` — 4px (input, бейджи, маленькие элементы);
-  - `radius-lg` — 8px (карточки, модалки, тосты).
+- **Radii**:
+  - `radius-sm` — 4px (inputs, badges, small elements);
+  - `radius-lg` — 8px (cards, modals, toasts).
 
-- **Тени**:
+- **Shadows**:
   - `shadow-sm`: `0 1px 2px rgba(15, 23, 42, 0.06)`;
   - `shadow-md`: `0 4px 12px rgba(15, 23, 42, 0.12)`.
-  - Применение:
-    - `shadow-sm` — для карточек и ховеров;
-    - `shadow-md` — для модалок и тостов, чтобы визуально выделить их над контентом.
+  - Usage:
+    - `shadow-sm` — for cards and hover states;
+    - `shadow-md` — for modals and toasts, to place them above content.
 
-### 2.4. Базовые UI‑компоненты (атомы)
+### 2.4. Base UI components (atoms)
 
-- **Кнопки**:
-  - Варианты:
-    - `btn-primary`: фон `color-primary`, текст `#FFFFFF`;
-    - `btn-secondary`: фон `color-neutral-50`, текст `color-neutral-900`, бордер `color-neutral-200`;
-    - `btn-ghost`: без фона, текст `color-primary`, фон `color-primary-soft` при наведении;
-    - `btn-danger`: фон `color-danger`, текст `#FFFFFF`.
-  - Состояния:
-    - `default`: как описано выше;
-    - `hover`: небольшое затемнение фона или усиление тени;
-    - `active`: чуть более тёмный фон, без анимаций в MVP;
-    - `disabled`: фон и текст в `color-neutral-200/500`, курсор `not-allowed`;
-    - `focus-visible`: явная обводка (outline 2px) с контрастным цветом (например, `#1D4ED8`).
+- **Buttons**:
+  - Variants:
+    - `btn-primary`: background `color-primary`, text `#FFFFFF`;
+    - `btn-secondary`: background `color-neutral-50`, text `color-neutral-900`, border `color-neutral-200`;
+    - `btn-ghost`: no background, text `color-primary`, background `color-primary-soft` on hover;
+    - `btn-danger`: background `color-danger`, text `#FFFFFF`.
+  - States:
+    - `default`: as described above;
+    - `hover`: slightly darker background or stronger shadow;
+    - `active`: slightly darker background, no animations required for MVP;
+    - `disabled`: background and text in `color-neutral-200/500`, cursor `not-allowed`;
+    - `focus-visible`: clear outline (2px) with a contrasting color (e.g. `#1D4ED8`).
 
-- **Поля ввода**:
-  - Фон `#FFFFFF`, бордер `color-neutral-200`, радиус `radius-sm`;
-  - `focus`: бордер `color-primary`, лёгкая тень;
-  - `error`: бордер и иконка/текст ошибки в `color-danger`;
-  - `disabled`: фон `color-neutral-50`, текст `color-neutral-500`.
+- **Inputs**:
+  - Background `#FFFFFF`, border `color-neutral-200`, radius `radius-sm`;
+  - `focus`: border in `color-primary`, light shadow;
+  - `error`: border and error icon/text in `color-danger`;
+  - `disabled`: background `color-neutral-50`, text `color-neutral-500`.
 
-- **Чекбоксы/радио**:
-  - Размер ~16px, радиус 4px для чекбокса, 50% для радио;
-  - активное состояние — заливка `color-primary`, иконка галочки/точки белая.
+- **Checkboxes/radios**:
+  - Size ~16px, radius 4px for checkbox, 50% for radio;
+  - active state — fill `color-primary`, checkmark/dot icon white.
 
-- **Иконки**:
-  - Размер базовый 16–20px;
-  - Стиль: простые линейные/заливочные иконки без излишних деталей, цвета привязывать к токенам статусов (`success`, `warning`, `danger`, `primary`).
+- **Icons**:
+  - Base size 16–20px;
+  - Style: simple line/fill icons, no excessive detail, colors bound to status tokens (`success`, `warning`, `danger`, `primary`).
 
-### 2.5. Доступность (a11y)
+### 2.5. Accessibility (a11y)
 
-- Минимальные требования:
-  - контраст текста и фона для основного текста и CTA ≥ WCAG AA;
-  - все интерактивные элементы (кнопки, ссылки, поля, карточки с кликом) имеют явный фокус‑стиль;
-  - основные потоки (регистрация, вход, резерв, вклад) доступны с клавиатуры без мыши.
-- ARIA‑паттерны:
-  - модалки — с `aria-modal`, фокус‑ловушкой и корректным возвратом фокуса;
-  - тосты — помечены как `role=\"status\"` или `role=\"alert\"` в зависимости от важности;
-  - прогресс‑бар — с `role=\"progressbar\"` и атрибутами `aria-valuemin/max/now`.
+- Minimum requirements:
+  - text and background contrast for main text and CTAs ≥ WCAG AA;
+  - all interactive elements (buttons, links, fields, clickable cards) have a clear focus style;
+  - key flows (registration, login, reserve, contribute) are keyboard‑accessible.
+- ARIA patterns:
+  - modals — with `aria-modal`, focus trap, and proper focus return;
+  - toasts — `role="status"` or `role="alert"` depending on severity;
+  - progress bar — `role="progressbar"` with `aria-valuemin/max/now`.
 
-## 2. Пользовательские потоки
+## 2. User flows
 
-### 2.1. Регистрация и вход
+### 2.1. Registration and login
 
-**Регистрация**
-- Точка входа:
-  - кнопка «Зарегистрироваться» на лэндинге;
-  - ссылка из модалки гостя при попытке зарезервировать/скинуться.
-- Форма:
-  - поля: email, пароль, (опционально) подтверждение пароля;
-  - валидация: корректный email, пароль не короче N символов (конкретное N фиксируется при реализации), сообщения об ошибках под полями;
-  - ссылка «Уже есть аккаунт? Войти».
-- После успешной регистрации:
-  - пользователь автоматически авторизован;
-  - перенаправление:
-    - если он пришёл из публичного вишлиста — обратно на этот вишлист, с восстановлением действия (например, повторное открытие карточки подарка для резерва);
-    - иначе — в личный кабинет (`Вишлисты`).
+**Registration**
+- Entry points:
+  - “Sign up” button on the landing page;
+  - link from the Guest modal when attempting to reserve/contribute.
+- Form:
+  - fields: email, password, (optionally) password confirmation;
+  - validation: valid email, password at least N characters (exact N set at implementation), error messages under fields;
+  - link “Already have an account? Log in”.
+- After successful registration:
+  - user is automatically authenticated;
+  - redirect:
+    - if they came from a public wishlist — back to that wishlist, restoring the intended action (e.g. reopen the specific gift card for reservation);
+    - otherwise — to the personal “Wishlists” screen.
 
-**Вход**
-- Точка входа:
-  - кнопка «Войти» на лэндинге/в хедере;
-  - ссылка из модалки гостя.
-- Форма:
-  - поля: email, пароль;
-  - кнопка «Войти через Google»;
-  - ссылка «Создать аккаунт».
-- После успешного входа:
-  - аналогично регистрации — возврат к исходной странице (если был публичный вишлист) или переход в личный кабинет.
+**Login**
+- Entry points:
+  - “Log in” button on landing/header;
+  - link from the Guest modal.
+- Form:
+  - fields: email, password;
+  - “Continue with Google” button;
+  - link “Create account”.
+- After successful login:
+  - same as registration — return to original page (if it was a public wishlist) or go to the personal area.
 
-### 2.2. Личный кабинет владельца
+### 2.2. Owner dashboard
 
-**Список вишлистов**
-- Экран `Вишлисты`:
-  - список карточек вишлистов:
-    - название;
-    - дата события (если есть);
-    - количество подарков;
-    - индикатор наличия активных сборов;
-  - сверху кнопка «Создать вишлист».
-- Действия с карточкой:
-  - «Открыть» (переход в режим владельца для управления);
-  - «Публичная ссылка» (копирование URL);
-  - «Редактировать» (название, описание, дата, настройки порога);
-  - «Удалить» (подтверждающая модалка с предупреждением об аннулировании резервов/вкладов).
+**Wishlist list**
+- `Wishlists` screen:
+  - list of wishlist cards:
+    - title;
+    - event date (if present);
+    - number of gifts;
+    - indicator for active collections;
+  - top “Create wishlist” button.
+- Actions on a card:
+  - “Open” (switch to owner mode for that wishlist);
+  - “Public link” (copy URL);
+  - “Edit” (title, description, date, threshold settings);
+  - “Delete” (confirmation modal warning about voiding reservations/contributions).
 
-**Создание / редактирование вишлиста**
-- Форма:
-  - название (обязательно);
-  - описание / повод (опционально);
-  - дата события (опционально, но рекомендуется);
-  - порог «дорогой» (значение по умолчанию 5000 ₽, можно изменить);
-  - опция включения/отключения публичной ссылки.
-- На этой же форме или сразу после создания:
-  - возможность добавить первые подарки (см. 2.3).
+**Create / edit wishlist**
+- Form:
+  - title (required);
+  - description / occasion (optional);
+  - event date (optional but recommended);
+  - “expensive gift” threshold (default 5000 ₽, editable);
+  - option to enable/disable public link.
+- On the same form or immediately after creation:
+  - ability to add initial gifts (see 2.3).
 
-### 2.3. Управление подарками
+### 2.3. Gift management
 
-**Добавление/редактирование подарка**
-- Модальное окно или отдельный экран:
-  - название (обязательно);
-  - ссылка на товар (URL);
-  - ориентировочная цена (в рублях, целое или с копейками);
-  - картинка (URL или загрузка; для MVP достаточно поля URL);
-  - комментарий (опционально).
-- Отдельно отображается:
-  - текущий порог «дорогой» для этого вишлиста;
-  - информация о том, что тип (обычный/дорогой) определяется автоматически по цене.
-- При редактировании дорогого подарка с уже существующими вкладами:
-  - UX должен явно предупредить, что изменение цены изменит целевую сумму сбора (но не уже собранную часть).
+**Add/edit gift**
+- Modal or separate screen:
+  - title (required);
+  - product URL;
+  - approximate price (rubles, integer or decimal);
+  - image (URL or upload; for MVP, URL is enough);
+  - comment (optional).
+- Additionally:
+  - current “expensive” threshold for this wishlist;
+  - explanation that type (regular/expensive) is determined automatically by price.
+- Editing an expensive gift with existing contributions:
+  - UX must clearly warn that changing the price will change the target collection amount (but not the already collected part).
 
-**Список подарков**
-- Для владельца:
-  - полный список подарков с:
-    - типом (обычный/дорогой);
-    - статусом (свободен/зарезервирован/сбор открыт/сбор завершён/сбор недобор);
-    - для дорогих — прогресс‑бар `собрано / цель`;
-  - действия:
-    - «Редактировать»;
-    - «Удалить» (подтверждение с текстом про аннулирование резерва/вкладов).
+**Gift list**
+- For the owner:
+  - full list of gifts with:
+    - type (regular/expensive);
+    - status (free/reserved/collection open/collection complete/collection underfunded);
+    - for expensive gifts — progress bar `collected / target`;
+  - actions:
+    - “Edit”;
+    - “Delete” (with confirmation notice about voiding reservation/contributions).
 
-### 2.4. Просмотр вишлиста по ссылке
+### 2.4. Viewing wishlist by link
 
-**Гость**
-- Видит:
-  - шапку (название, дата события, описание);
-  - все подарки;
-  - статусы подарков и прогресс сборов.
-- При клике по:
-  - «Зарезервировать» или «Скинуться»:
-    - всплывает модалка:
-      - короткое объяснение, что для действия нужна регистрация/вход;
-      - кнопки «Войти» и «Зарегистрироваться»;
-      - крестик / «Отмена»;
-    - после логина/регистрации возвращается на тот же вишлист и тот же подарок.
+**Guest**
+- Sees:
+  - header (title, event date, description);
+  - all gifts;
+  - gift statuses and collection progress.
+- On clicking:
+  - “Reserve” or “Contribute”:
+    - show a modal:
+      - short explanation that login/registration is required;
+      - buttons “Log in” and “Sign up”;
+      - close / “Cancel”;
+    - after login/registration, return to the same wishlist and the same gift.
 
-**Друг (залогинен, не владелец)**
-- У видимых элементов:
-  - для обычного подарка:
-    - либо кнопка «Зарезервировать», если подарок свободен;
-    - либо текст «Зарезервировано» +, опционально, имя/аватар резервиста;
-  - для дорогого подарка:
-    - форма/кнопка «Скинуться» (ввод суммы);
-    - прогресс‑бар и сумма;
-    - статус «Сбор завершён» при полной сумме;
-  - при ошибке (подарок уже зарезервирован, цель достигнута) — тост или сообщение рядом с карточкой.
+**Friend (logged in, not owner)**
+- Elements:
+  - for a regular gift:
+    - either “Reserve” button if gift is free;
+    - or text “Reserved” plus optional reserver name/avatar;
+  - for an expensive gift:
+    - “Contribute” form/button (amount input);
+    - progress bar and amounts;
+    - “Collection complete” status when target reached;
+  - on error (gift already reserved, collection complete) — toast or inline message near the card.
 
-**Владелец по ссылке**
-- Видит тот же список и статусы, что Друг;
-- **Не видит** кнопок «Зарезервировать» и «Скинуться»;
-- Может иметь кнопку «Открыть в режиме владельца» (переход в кабинет на соответствующий вишлист).
+**Owner via public link**
+- Sees the same list and statuses as Friend;
+- **Does not see** “Reserve” and “Contribute” buttons;
+- May have a button “Open as owner” (go to the owner dashboard view for this wishlist).
 
-### 2.5. Резервирование
+### 2.5. Reservation
 
-- Поток для друга:
-  - нажимает «Зарезервировать»;
-  - опционально — модалка подтверждения («Вы уверены, что хотите зарезервировать этот подарок?»);
-  - при успехе:
-    - статус меняется на «Зарезервировано»;
-    - другим пользователям статус обновляется через реалтайм/повторный запрос;
-    - показывается тост «Подарок зарезервирован».
-  - при ошибке (уже зарезервирован):
-    - сообщение «К сожалению, кто‑то уже успел зарезервировать этот подарок»;
-    - статус обновляется в UI.
-- Снятие резерва:
-  - доступно до даты события (если она есть);
-  - инициируется из карточки («Снять резерв»);
-  - после даты события кнопка скрывается/становится неактивной.
+- Friend flow:
+  - clicks “Reserve”;
+  - optionally sees a confirmation modal (“Are you sure you want to reserve this gift?”);
+  - on success:
+    - status changes to “Reserved”;
+    - other users see the updated status via real‑time update/refresh;
+    - toast “Gift reserved” appears.
+  - on error (gift already reserved):
+    - show message like “Unfortunately, someone has already reserved this gift”;
+    - update card status in UI.
+- Cancelling reservation:
+  - available until event date (if set);
+  - initiated from the card (“Cancel reservation”);
+  - after event date, the button is hidden/disabled.
 
-### 2.6. Групповой сбор
+### 2.6. Group collection
 
-- Поток для друга:
-  - на карточке дорогого подарка:
-    - видит цель (сумма), собрано, прогресс;
-    - вводит сумму вклада;
-    - система проверяет, что вклад не переполнит цель; при необходимости может автоматически подставить «максимально допустимый» вклад;
-    - при успехе:
-      - прогресс обновляется;
-      - показывается тост «Вклад учтён».
-    - при попытке переполнить цель:
-      - сообщение об ошибке и предложение скорректировать сумму.
-- Недобор и продление:
-  - при наступлении даты события и недоборе:
-    - статус подарка показывает, что цель не достигнута;
-    - после решения владельца о продлении — дата и статус обновляются.
+- Friend flow:
+  - on the card of an expensive gift:
+    - sees target amount, collected amount, progress;
+    - enters contribution amount;
+    - system checks that contribution will not overfund the goal; optionally can auto‑suggest a “max allowed” amount;
+    - on success:
+      - progress updates;
+      - toast “Contribution recorded” appears.
+    - on attempt to overfund:
+      - show error message and suggest correcting the amount.
+- Underfunding and extension:
+  - when event date passes and goal is not reached:
+    - gift status indicates that goal was not reached;
+    - after owner decides to extend, date and status are updated.
 
-### 2.7. Предложения подарков (Phase 2)
+### 2.7. Gift suggestions (Phase 2)
 
-- Поток для друга:
-  - кнопка «Предложить подарок» на публичном вишлисте (только для залогиненных Друзей);
-  - модалка с полями, как у обычного подарка;
-  - после отправки:
-    - предложение исчезает из интерфейса друга (только сообщение «Ваше предложение отправлено владельцу»);
-    - попадает в очередь у владельца.
-- Поток для владельца:
-  - в режиме управления вишлистом видит отдельный список «Предложения»;
-  - по каждому — минимальная информация о подарке и две кнопки:
-    - «Принять» — подарок добавляется в общий список подарков;
-    - «Отклонить» — предложение исчезает из очереди;
-  - нигде не отображается, кто предложил подарок.
+- Friend flow:
+  - “Suggest a gift” button on public wishlist (Friends only);
+  - modal with same fields as a regular gift;
+  - after submit:
+    - suggestion disappears from Friend’s UI (only message “Your suggestion has been sent to the owner”);
+    - goes into the owner’s suggestions queue.
+- Owner flow:
+  - in owner mode, sees a separate “Suggestions” list;
+  - each suggestion shows minimal gift info and two buttons:
+    - “Accept” — gift is added to main gift list;
+    - “Reject” — suggestion is removed from the queue;
+  - suggester identity is not shown anywhere.
 
 ## 3. Структура экранов и навигации
 
