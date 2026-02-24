@@ -31,7 +31,6 @@ router.post("/register", validate(registerSchema), async (req, res, next) => {
     const { email, password, displayName } = req.body as z.infer<
       typeof registerSchema
     >;
-
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
       throw conflict("User with this email already exists");
