@@ -2,9 +2,9 @@ import { X } from "lucide-react";
 import { useToast } from "../../hooks/useToast.tsx";
 
 const typeClasses = {
-  success: "border-success bg-green-50 text-success",
-  error: "border-danger bg-red-50 text-danger",
-  info: "border-primary bg-primary-soft text-primary",
+  success: "border-success bg-green-500/20 text-green-300",
+  error: "border-danger bg-red-500/20 text-red-300",
+  info: "border-primary bg-primary-soft/40 text-primary",
 };
 
 const ToastContainer = () => {
@@ -18,12 +18,12 @@ const ToastContainer = () => {
         <div
           key={t.id}
           role="status"
-          className={`flex items-center gap-3 rounded-lg border px-4 py-3 shadow-md ${typeClasses[t.type]}`}
+          className={`flex items-center gap-3 rounded-xl border px-4 py-3 shadow-lg shadow-black/30 ${typeClasses[t.type]}`}
         >
           <span className="text-sm font-medium">{t.message}</span>
           <button
             onClick={() => removeToast(t.id)}
-            className="ml-auto rounded p-0.5 hover:opacity-70"
+            className="ml-auto rounded p-0.5 text-current hover:opacity-70"
             aria-label="Закрыть уведомление"
           >
             <X size={14} />

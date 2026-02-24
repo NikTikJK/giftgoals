@@ -34,22 +34,22 @@ const Modal = ({ open, onClose, title, children }: ModalProps) => {
   return (
     <dialog
       ref={dialogRef}
-      className="m-auto max-w-lg w-full rounded-lg p-0 shadow-lg backdrop:bg-overlay"
+      className="m-auto w-full max-w-lg rounded-xl border border-neutral-800 bg-neutral-900 p-0 shadow-xl shadow-black/50 backdrop:bg-overlay"
       aria-modal="true"
       aria-label={title}
     >
-      <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
-        <h2 className="text-lg font-semibold text-neutral-900">{title}</h2>
+      <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-4">
+        <h2 className="text-lg font-semibold text-neutral-100">{title}</h2>
         <button
           onClick={onClose}
-          className="rounded-sm p-1 text-neutral-500 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="rounded-sm p-1 text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           aria-label="Закрыть"
           tabIndex={0}
         >
           <X size={20} />
         </button>
       </div>
-      <div className="px-6 py-4">{children}</div>
+      <div className="px-6 py-4 text-neutral-200">{children}</div>
     </dialog>
   );
 };

@@ -57,13 +57,13 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <p className="mt-12 text-center text-neutral-500">Загрузка...</p>;
+    return <p className="mt-12 text-center text-neutral-400">Загрузка...</p>;
   }
 
   return (
-    <div>
+    <div className="text-neutral-100">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Мои вишлисты</h1>
+        <h1 className="text-2xl font-semibold text-neutral-50">Мои вишлисты</h1>
         <Button onClick={() => setShowCreate(true)}>
           <Plus size={16} /> Создать
         </Button>
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
       {wishlists.length === 0 ? (
         <div className="mt-16 text-center">
-          <p className="text-neutral-500">У вас пока нет вишлистов</p>
+          <p className="text-neutral-400">У вас пока нет вишлистов</p>
           <Button className="mt-4" onClick={() => setShowCreate(true)}>
             Создать первый вишлист
           </Button>
@@ -109,7 +109,7 @@ const Dashboard = () => {
       </Modal>
 
       <Modal open={!!deleteId} onClose={() => setDeleteId(null)} title="Удалить вишлист?">
-        <p className="mb-4 text-sm text-neutral-700">
+        <p className="mb-4 text-sm text-neutral-300">
           Все подарки, резервы и вклады будут удалены безвозвратно.
         </p>
         <div className="flex gap-3">

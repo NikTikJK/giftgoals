@@ -62,12 +62,12 @@ const Profile = () => {
   };
 
   if (!profile) {
-    return <p className="mt-12 text-center text-neutral-500">Загрузка...</p>;
+    return <p className="mt-12 text-center text-neutral-400">Загрузка...</p>;
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <h1 className="mb-6 text-2xl font-semibold">Профиль</h1>
+    <div className="mx-auto max-w-md text-neutral-100">
+      <h1 className="mb-6 text-2xl font-semibold text-neutral-50">Профиль</h1>
 
       <form onSubmit={handleSaveProfile} className="flex flex-col gap-4">
         <Input label="Email" value={profile.email} disabled />
@@ -83,9 +83,9 @@ const Profile = () => {
         </Button>
       </form>
 
-      <hr className="my-8 border-neutral-200" />
+      <hr className="my-8 border-neutral-800" />
 
-      <h2 className="mb-4 text-lg font-semibold">Сменить пароль</h2>
+      <h2 className="mb-4 text-lg font-semibold text-neutral-100">Сменить пароль</h2>
       <form onSubmit={handleChangePassword} className="flex flex-col gap-4">
         <Input
           label="Текущий пароль"

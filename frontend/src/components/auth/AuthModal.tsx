@@ -18,7 +18,7 @@ const AuthModal = ({ open, onClose }: AuthModalProps) => {
 
   return (
     <Modal open={open} onClose={onClose} title="Требуется авторизация">
-      <p className="mb-6 text-sm text-neutral-700">
+      <p className="mb-6 text-sm text-neutral-300">
         Чтобы зарезервировать подарок или сделать вклад, необходимо войти или
         зарегистрироваться.
       </p>

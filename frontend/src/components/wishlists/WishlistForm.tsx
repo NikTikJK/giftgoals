@@ -54,9 +54,9 @@ const WishlistForm = ({ initial, onSubmit, onCancel, submitLabel }: WishlistForm
         onChange={(e) => setTitle(e.target.value)}
       />
       <div className="flex flex-col gap-1">
-        <label className="text-sm text-neutral-700">Описание</label>
+        <label className="text-sm text-neutral-300">Описание</label>
         <textarea
-          className="rounded-sm border border-neutral-200 px-3 py-2 text-base outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+          className="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-base text-neutral-100 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
           rows={3}
           maxLength={2000}
           value={description}
@@ -76,7 +76,7 @@ const WishlistForm = ({ initial, onSubmit, onCancel, submitLabel }: WishlistForm
         value={threshold}
         onChange={(e) => setThreshold(e.target.value)}
       />
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-sm text-neutral-300">
         <input
           type="checkbox"
           checked={isPublic}

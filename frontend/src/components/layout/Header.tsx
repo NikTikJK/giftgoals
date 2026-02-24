@@ -79,13 +79,13 @@ const Header = () => {
             <>
               <Link
                 to="/auth/login"
-                className="rounded-sm px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
+                className="rounded-sm px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800"
               >
                 Войти
               </Link>
               <Link
                 to="/auth/register"
-                className="rounded-sm bg-primary px-3 py-1.5 text-sm text-white hover:bg-primary-dark"
+                className="rounded-sm bg-primary px-3 py-1.5 text-sm font-medium text-neutral-900 hover:bg-primary-dark"
               >
                 Регистрация
               </Link>

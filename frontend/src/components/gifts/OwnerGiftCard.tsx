@@ -28,35 +28,35 @@ const OwnerGiftCard = ({ gift, onEdit, onDelete }: OwnerGiftCardProps) => {
   };
 
   return (
-    <div className="flex gap-4 rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
+    <div className="flex gap-4 rounded-xl border border-neutral-800 bg-neutral-900/70 p-4 shadow-sm shadow-black/30">
       {gift.imageUrl && (
         <img
           src={gift.imageUrl}
           alt={gift.title}
-          className="h-20 w-20 flex-shrink-0 rounded-sm object-cover"
+          className="h-20 w-20 flex-shrink-0 rounded-md object-cover"
         />
       )}
       <div className="flex flex-1 flex-col gap-1">
         <div className="flex items-start justify-between gap-2">
-          <h4 className="font-medium text-neutral-900">{gift.title}</h4>
+          <h4 className="font-medium text-neutral-100">{gift.title}</h4>
           <div className="flex gap-1">
             <button
               onClick={onEdit}
-              className="rounded p-1 text-neutral-500 hover:bg-neutral-50 hover:text-primary"
+              className="rounded p-1 text-neutral-400 hover:bg-neutral-800 hover:text-primary"
               aria-label="Редактировать подарок"
             >
               <Edit size={15} />
             </button>
             <button
               onClick={onDelete}
-              className="rounded p-1 text-neutral-500 hover:bg-neutral-50 hover:text-danger"
+              className="rounded p-1 text-neutral-400 hover:bg-neutral-800 hover:text-danger"
               aria-label="Удалить подарок"
             >
               <Trash2 size={15} />
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-2 text-sm text-neutral-500">
+        <div className="flex flex-wrap items-center gap-2 text-sm text-neutral-400">
           {gift.price !== null && <span>{formatPrice(gift.price)} ₽</span>}
           {statusBadge()}
         </div>
@@ -65,12 +65,12 @@ const OwnerGiftCard = ({ gift, onEdit, onDelete }: OwnerGiftCardProps) => {
             href={gift.productUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
           >
             <ExternalLink size={12} /> Ссылка на товар
           </a>
         )}
-        {gift.comment && <p className="text-xs text-neutral-500">{gift.comment}</p>}
+        {gift.comment && <p className="text-xs text-neutral-400">{gift.comment}</p>}
         {gift.isExpensive && gift.price !== null && (
           <div className="mt-1">
             <ProgressBar

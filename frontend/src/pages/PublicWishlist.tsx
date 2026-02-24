@@ -81,14 +81,14 @@ const PublicWishlist = () => {
   };
 
   if (loading) {
-    return <p className="mt-12 text-center text-neutral-500">Загрузка...</p>;
+    return <p className="mt-12 text-center text-neutral-400">Загрузка...</p>;
   }
   if (notFound || !wishlist) {
     return (
-      <div className="mt-16 text-center">
-        <h2 className="text-xl font-semibold text-neutral-900">Вишлист не найден</h2>
-        <p className="mt-2 text-sm text-neutral-500">Ссылка недействительна или вишлист удалён.</p>
-        <Link to="/" className="mt-4 inline-block text-primary hover:underline">
+      <div className="mt-16 text-center text-neutral-100">
+        <h2 className="text-xl font-semibold text-neutral-50">Вишлист не найден</h2>
+        <p className="mt-2 text-sm text-neutral-400">Ссылка недействительна или вишлист удалён.</p>
+        <Link to="/" className="mt-4 inline-block font-medium text-primary hover:underline">
           На главную
         </Link>
       </div>
@@ -96,16 +96,16 @@ const PublicWishlist = () => {
   }
 
   return (
-    <div>
+    <div className="text-neutral-100">
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold">{wishlist.title}</h1>
-            <p className="mt-1 text-sm text-neutral-500">
+            <h1 className="text-2xl font-semibold text-neutral-50">{wishlist.title}</h1>
+            <p className="mt-1 text-sm text-neutral-400">
               от {wishlist.owner.displayName}
             </p>
             {wishlist.description && (
-              <p className="mt-2 text-sm text-neutral-700">{wishlist.description}</p>
+              <p className="mt-2 text-sm text-neutral-300">{wishlist.description}</p>
             )}
             {wishlist.eventDate && (
               <p className="mt-2 flex items-center gap-1 text-sm text-neutral-500">
@@ -123,7 +123,7 @@ const PublicWishlist = () => {
             {role === "owner" && (
               <Link
                 to={`/app/wishlists/${wishlist.id}`}
-                className="rounded-sm px-3 py-1.5 text-sm text-primary hover:bg-primary-soft"
+                className="rounded-sm px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary-soft/40"
               >
                 Управление
               </Link>
@@ -133,7 +133,7 @@ const PublicWishlist = () => {
       </div>
 
       {gifts.length === 0 ? (
-        <p className="mt-16 text-center text-neutral-500">В этом вишлисте пока нет подарков</p>
+        <p className="mt-16 text-center text-neutral-400">В этом вишлисте пока нет подарков</p>
       ) : (
         <div className="flex flex-col gap-3">
           {gifts.map((g) => (

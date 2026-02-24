@@ -72,9 +72,9 @@ const GiftForm = ({ initial, threshold, onSubmit, onCancel, submitLabel }: GiftF
         onChange={(e) => setPrice(e.target.value)}
       />
       {priceKopecks !== null && (
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-neutral-400">
           Тип:{" "}
-          <span className={isExpensive ? "font-medium text-accent" : ""}>
+          <span className={isExpensive ? "font-medium text-accent" : "text-neutral-300"}>
             {isExpensive ? "дорогой (сбор)" : "обычный (резерв)"}
           </span>
           {" · "}Порог: {threshold / 100} ₽
@@ -93,9 +93,9 @@ const GiftForm = ({ initial, threshold, onSubmit, onCancel, submitLabel }: GiftF
         onChange={(e) => setImageUrl(e.target.value)}
       />
       <div className="flex flex-col gap-1">
-        <label className="text-sm text-neutral-700">Комментарий</label>
+        <label className="text-sm text-neutral-300">Комментарий</label>
         <textarea
-          className="rounded-sm border border-neutral-200 px-3 py-2 text-base outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
+          className="rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-base text-neutral-100 outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
           rows={2}
           maxLength={1000}
           value={comment}

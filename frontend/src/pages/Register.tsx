@@ -43,8 +43,8 @@ const Register = () => {
   };
 
   return (
-    <div className="mx-auto mt-16 max-w-sm">
-      <h1 className="mb-6 text-center text-2xl font-semibold">Регистрация</h1>
+    <div className="mx-auto mt-16 max-w-sm text-neutral-100">
+      <h1 className="mb-6 text-center text-2xl font-semibold text-neutral-50">Регистрация</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
           label="Имя"
@@ -74,11 +74,11 @@ const Register = () => {
           Зарегистрироваться
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm text-neutral-500">
+      <p className="mt-4 text-center text-sm text-neutral-400">
         Уже есть аккаунт?{" "}
         <Link
           to={`/auth/login${redirect ? `?redirect=${encodeURIComponent(redirect)}` : ""}`}
-          className="text-primary hover:underline"
+          className="text-primary font-medium hover:underline"
         >
           Войти
         </Link>

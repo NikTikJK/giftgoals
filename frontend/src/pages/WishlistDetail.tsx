@@ -76,26 +76,26 @@ const WishlistDetail = () => {
   };
 
   if (loading) {
-    return <p className="mt-12 text-center text-neutral-500">Загрузка...</p>;
+    return <p className="mt-12 text-center text-neutral-400">Загрузка...</p>;
   }
   if (!wishlist) {
-    return <p className="mt-12 text-center text-neutral-500">Вишлист не найден</p>;
+    return <p className="mt-12 text-center text-neutral-400">Вишлист не найден</p>;
   }
 
   return (
-    <div>
+    <div className="text-neutral-100">
       <div className="mb-6">
         <Link
           to="/app/wishlists"
-          className="mb-3 inline-flex items-center gap-1 text-sm text-neutral-500 hover:text-primary"
+          className="mb-3 inline-flex items-center gap-1 text-sm text-neutral-400 hover:text-primary"
         >
           <ArrowLeft size={14} /> Назад к вишлистам
         </Link>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold">{wishlist.title}</h1>
+            <h1 className="text-2xl font-semibold text-neutral-50">{wishlist.title}</h1>
             {wishlist.description && (
-              <p className="mt-1 text-sm text-neutral-500">{wishlist.description}</p>
+              <p className="mt-1 text-sm text-neutral-400">{wishlist.description}</p>
             )}
             <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
               {wishlist.eventDate && <span>Событие: {formatDate(wishlist.eventDate)}</span>}
@@ -105,7 +105,7 @@ const WishlistDetail = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigator.clipboard.writeText(`${window.location.origin}/w/${wishlist.slug}`)}
-              className="inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm text-primary hover:bg-primary-soft"
+              className="inline-flex items-center gap-1 rounded-sm px-3 py-1.5 text-sm font-medium text-primary hover:bg-primary-soft/40"
               title="Копировать публичную ссылку"
             >
               <ExternalLink size={14} /> Ссылка
@@ -119,7 +119,7 @@ const WishlistDetail = () => {
 
       {wishlist.gifts.length === 0 ? (
         <div className="mt-16 text-center">
-          <p className="text-neutral-500">Желанные подарки появятся здесь</p>
+          <p className="text-neutral-400">Желанные подарки появятся здесь</p>
           <Button className="mt-4" onClick={() => setShowAddGift(true)}>
             Добавить первый подарок
           </Button>
@@ -159,7 +159,7 @@ const WishlistDetail = () => {
       </Modal>
 
       <Modal open={!!deletingGiftId} onClose={() => setDeletingGiftId(null)} title="Удалить подарок?">
-        <p className="mb-4 text-sm text-neutral-700">
+        <p className="mb-4 text-sm text-neutral-300">
           Резервы и вклады по этому подарку будут отменены.
         </p>
         <div className="flex gap-3">

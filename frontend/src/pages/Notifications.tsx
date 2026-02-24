@@ -34,13 +34,13 @@ const Notifications = () => {
   };
 
   if (loading) {
-    return <p className="mt-12 text-center text-neutral-500">Загрузка...</p>;
+    return <p className="mt-12 text-center text-neutral-400">Загрузка...</p>;
   }
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-lg text-neutral-100">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Уведомления</h1>
+        <h1 className="text-2xl font-semibold text-neutral-50">Уведомления</h1>
         {notifications.some((n) => !n.isRead) && (
           <Button variant="ghost" className="text-sm" onClick={handleMarkAllRead}>
             <CheckCheck size={14} /> Прочитать все
@@ -49,8 +49,8 @@ const Notifications = () => {
       </div>
 
       {notifications.length === 0 ? (
-        <div className="mt-16 flex flex-col items-center text-neutral-500">
-          <Bell size={40} className="mb-3 text-neutral-200" />
+        <div className="mt-16 flex flex-col items-center text-neutral-400">
+          <Bell size={40} className="mb-3 text-neutral-600" />
           <p>Уведомлений пока нет</p>
         </div>
       ) : (
@@ -58,15 +58,15 @@ const Notifications = () => {
           {notifications.map((n) => (
             <div
               key={n.id}
-              className={`flex items-start gap-3 rounded-lg border p-3 ${
+              className={`flex items-start gap-3 rounded-xl border p-3 ${
                 n.isRead
-                  ? "border-neutral-200 bg-white"
-                  : "border-primary-soft bg-primary-soft/30"
+                  ? "border-neutral-800 bg-neutral-900/60"
+                  : "border-primary-soft/50 bg-primary-soft/20"
               }`}
             >
               <div className="flex-1">
-                <p className="text-sm font-medium text-neutral-900">{n.title}</p>
-                <p className="text-sm text-neutral-500">{n.body}</p>
+                <p className="text-sm font-medium text-neutral-100">{n.title}</p>
+                <p className="text-sm text-neutral-400">{n.body}</p>
                 <p className="mt-1 text-xs text-neutral-500">
                   {new Date(n.createdAt).toLocaleString("ru-RU")}
                 </p>
@@ -74,7 +74,7 @@ const Notifications = () => {
               {!n.isRead && (
                 <button
                   onClick={() => handleMarkRead(n.id)}
-                  className="rounded p-1 text-primary hover:bg-primary-soft"
+                  className="rounded p-1 text-primary hover:bg-primary-soft/40"
                   aria-label="Отметить как прочитанное"
                 >
                   <Check size={16} />

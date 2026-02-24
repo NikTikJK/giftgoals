@@ -29,3 +29,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Основной текст и заголовки в контенте */
+main {
+  color: #e2e8f0;
+}
+
+main h1, main h2, main h3 {
+  color: #f1f5f9;
+}
