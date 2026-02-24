@@ -132,5 +132,3 @@ This document describes practical steps for implementing the GiftGoals project o
 4. Reservations and group collection + real‑time updates.  
 5. Notifications.  
 6. UX/UI polishing and production readiness.  
-
-Если хочешь, дальше могу сделать коммит/пуш именно с переводом этих трёх файлов, с коротким английским описанием изменений.
