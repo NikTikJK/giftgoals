@@ -15,17 +15,17 @@ const WishlistCard = ({ wishlist, onDelete, onEdit }: WishlistCardProps) => {
   };
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/70 p-4 shadow-md shadow-black/30 transition-transform transition-shadow hover:-translate-y-0.5 hover:shadow-lg">
       <div className="flex items-start justify-between gap-3">
         <Link to={`/app/wishlists/${wishlist.id}`} className="group flex-1">
-          <h3 className="text-base font-semibold text-neutral-900 group-hover:text-primary">
+          <h3 className="text-base font-semibold text-neutral-100 group-hover:text-primary">
             {wishlist.title}
           </h3>
         </Link>
         <div className="flex items-center gap-1">
           <button
             onClick={handleCopyLink}
-            className="rounded p-1.5 text-neutral-500 hover:bg-neutral-50 hover:text-primary"
+            className="rounded p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-primary"
             aria-label="Копировать публичную ссылку"
             title="Копировать ссылку"
           >
@@ -33,14 +33,14 @@ const WishlistCard = ({ wishlist, onDelete, onEdit }: WishlistCardProps) => {
           </button>
           <button
             onClick={() => onEdit(wishlist)}
-            className="rounded p-1.5 text-neutral-500 hover:bg-neutral-50 hover:text-primary"
+            className="rounded p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-primary"
             aria-label="Редактировать"
           >
             <Edit size={16} />
           </button>
           <button
             onClick={() => onDelete(wishlist.id)}
-            className="rounded p-1.5 text-neutral-500 hover:bg-neutral-50 hover:text-danger"
+            className="rounded p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-danger"
             aria-label="Удалить"
           >
             <Trash2 size={16} />
@@ -48,7 +48,7 @@ const WishlistCard = ({ wishlist, onDelete, onEdit }: WishlistCardProps) => {
         </div>
       </div>
       {wishlist.description && (
-        <p className="mt-1 text-sm text-neutral-500 line-clamp-2">{wishlist.description}</p>
+        <p className="mt-1 text-sm text-neutral-400 line-clamp-2">{wishlist.description}</p>
       )}
       <div className="mt-3 flex items-center gap-4 text-xs text-neutral-500">
         {wishlist.eventDate && (

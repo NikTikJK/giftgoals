@@ -29,9 +29,12 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white">
+    <header className="sticky top-0 z-40 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        <Link to={user ? "/app/wishlists" : "/"} className="flex items-center gap-2 font-semibold text-primary">
+        <Link
+          to={user ? "/app/wishlists" : "/"}
+          className="flex items-center gap-2 font-semibold text-primary"
+        >
           <Gift size={22} />
           <span>GiftGoals</span>
         </Link>
@@ -41,13 +44,13 @@ const Header = () => {
             <>
               <Link
                 to="/app/wishlists"
-                className="rounded-sm px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50"
+                className="rounded-sm px-3 py-1.5 text-sm text-neutral-200 hover:bg-neutral-800"
               >
                 Вишлисты
               </Link>
               <Link
                 to="/app/notifications"
-                className="relative rounded-sm p-1.5 text-neutral-700 hover:bg-neutral-50"
+                className="relative rounded-sm p-1.5 text-neutral-300 hover:bg-neutral-800"
                 aria-label="Уведомления"
               >
                 <Bell size={18} />
@@ -59,14 +62,14 @@ const Header = () => {
               </Link>
               <Link
                 to="/app/profile"
-                className="rounded-sm p-1.5 text-neutral-700 hover:bg-neutral-50"
+                className="rounded-sm p-1.5 text-neutral-300 hover:bg-neutral-800"
                 aria-label="Профиль"
               >
                 <User size={18} />
               </Link>
               <button
                 onClick={handleLogout}
-                className="rounded-sm p-1.5 text-neutral-500 hover:bg-neutral-50 hover:text-danger"
+                className="rounded-sm p-1.5 text-neutral-400 hover:bg-neutral-800 hover:text-danger"
                 aria-label="Выйти"
               >
                 <LogOut size={18} />

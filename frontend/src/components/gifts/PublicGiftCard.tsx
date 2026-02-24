@@ -67,7 +67,7 @@ const PublicGiftCard = ({
   };
 
   return (
-    <div className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
+    <div className="rounded-xl border border-neutral-800 bg-neutral-900/70 p-4 shadow-sm shadow-black/30">
       <div className="flex gap-4">
         {gift.imageUrl && (
           <img
@@ -78,10 +78,10 @@ const PublicGiftCard = ({
         )}
         <div className="flex flex-1 flex-col gap-1.5">
           <div className="flex items-start justify-between gap-2">
-            <h4 className="font-medium text-neutral-900">{gift.title}</h4>
+            <h4 className="font-medium text-neutral-100">{gift.title}</h4>
             {statusBadge()}
           </div>
-          <div className="flex items-center gap-2 text-sm text-neutral-500">
+          <div className="flex items-center gap-2 text-sm text-neutral-400">
             {gift.price !== null && <span>{formatPrice(gift.price)} ₽</span>}
             {gift.productUrl && (
               <a
@@ -94,11 +94,11 @@ const PublicGiftCard = ({
               </a>
             )}
           </div>
-          {gift.comment && <p className="text-xs text-neutral-500">{gift.comment}</p>}
+          {gift.comment && <p className="text-xs text-neutral-400">{gift.comment}</p>}
 
           {/* Reserved by info (friends only) */}
           {gift.status === "reserved" && gift.reservedBy && role === "friend" && (
-            <div className="flex items-center gap-1.5 text-xs text-neutral-500">
+            <div className="flex items-center gap-1.5 text-xs text-neutral-400">
               <User size={12} />
               <span>{gift.reservedBy.displayName}</span>
             </div>

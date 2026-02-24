@@ -56,6 +56,9 @@
 
 ## 3. Деплой фронтенда (Static Site)
 
+Пошаговая инструкция с настройкой SPA (rewrite для React Router): **[frontend/RENDER_DEPLOY.md](../frontend/RENDER_DEPLOY.md)**.
+
+Кратко:
 1. В том же Render Dashboard: **New → Static Site**.
 2. Выбрать тот же репозиторий:
    - **Name**: например `giftgoals-frontend`.

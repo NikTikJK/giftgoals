@@ -10,7 +10,7 @@ const ProgressBar = ({ current, target, complete }: ProgressBarProps) => {
   return (
     <div className="flex flex-col gap-1">
       <div
-        className="h-2.5 w-full overflow-hidden rounded-full bg-neutral-200"
+        className="h-2.5 w-full overflow-hidden rounded-full bg-neutral-800"
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={target}
@@ -22,7 +22,7 @@ const ProgressBar = ({ current, target, complete }: ProgressBarProps) => {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs text-neutral-500">
+      <span className="text-xs text-neutral-400">
         {formatPrice(current)} / {formatPrice(target)} ₽ ({Math.round(pct)}%)
       </span>
     </div>

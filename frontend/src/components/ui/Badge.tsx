@@ -8,16 +8,16 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  free: "bg-neutral-50 text-neutral-700",
-  reserved: "bg-primary-soft text-primary",
-  collecting: "bg-primary-soft text-primary",
-  complete: "bg-green-100 text-success",
-  underfunded: "bg-yellow-100 text-amber-700",
+  free: "bg-neutral-800 text-neutral-300",
+  reserved: "bg-primary-soft/40 text-primary",
+  collecting: "bg-primary-soft/40 text-primary",
+  complete: "bg-green-500/20 text-success",
+  underfunded: "bg-yellow-500/20 text-yellow-300",
 };
 
 const Badge = ({ variant, children }: BadgeProps) => (
   <span
-    className={`inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-medium ${variantClasses[variant]}`}
+    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${variantClasses[variant]}`}
   >
     {children}
   </span>
