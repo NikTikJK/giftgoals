@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Bell, Check, CheckCheck } from "lucide-react";
 import { notificationsApi, type Notification } from "../api/notifications.ts";
 import { useToast } from "../hooks/useToast.tsx";
+import { usePolling } from "../hooks/usePolling.ts";
 import Button from "../components/ui/Button.tsx";
 
 const Notifications = () => {
@@ -9,20 +10,18 @@ const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const { notifications } = await notificationsApi.list();
       setNotifications(notifications);
     } catch {
-      addToast("error", "Не удалось загрузить уведомления");
+      if (loading) addToast("error", "Не удалось загрузить уведомления");
     } finally {
       setLoading(false);
     }
-  };
+  }, [addToast, loading]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  usePolling(fetchData, { intervalMs: 10_000 });
 
   const handleMarkRead = async (id: string) => {
     await notificationsApi.markRead(id);

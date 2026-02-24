@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Plus, ArrowLeft, ExternalLink } from "lucide-react";
 import { wishlistsApi, type Wishlist, type WishlistGift } from "../api/wishlists.ts";
 import { giftsApi } from "../api/gifts.ts";
 import { useToast } from "../hooks/useToast.tsx";
+import { usePolling } from "../hooks/usePolling.ts";
 import Button from "../components/ui/Button.tsx";
 import Modal from "../components/ui/Modal.tsx";
 import GiftForm from "../components/gifts/GiftForm.tsx";
@@ -26,15 +27,13 @@ const WishlistDetail = () => {
       const { wishlist } = await wishlistsApi.get(id);
       setWishlist(wishlist);
     } catch {
-      addToast("error", "Не удалось загрузить вишлист");
+      if (loading) addToast("error", "Не удалось загрузить вишлист");
     } finally {
       setLoading(false);
     }
-  }, [id, addToast]);
+  }, [id, addToast, loading]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  usePolling(fetchData, { intervalMs: 10_000, enabled: !!id });
 
   const handleAddGift = async (data: {
     title: string;
@@ -85,7 +84,6 @@ const WishlistDetail = () => {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-6">
         <Link
           to="/app/wishlists"
@@ -119,7 +117,6 @@ const WishlistDetail = () => {
         </div>
       </div>
 
-      {/* Gifts list */}
       {wishlist.gifts.length === 0 ? (
         <div className="mt-16 text-center">
           <p className="text-neutral-500">Желанные подарки появятся здесь</p>
@@ -140,7 +137,6 @@ const WishlistDetail = () => {
         </div>
       )}
 
-      {/* Add gift modal */}
       <Modal open={showAddGift} onClose={() => setShowAddGift(false)} title="Добавить подарок">
         <GiftForm
           threshold={wishlist.expensiveThreshold}
@@ -150,7 +146,6 @@ const WishlistDetail = () => {
         />
       </Modal>
 
-      {/* Edit gift modal */}
       <Modal open={!!editingGift} onClose={() => setEditingGift(null)} title="Редактировать подарок">
         {editingGift && (
           <GiftForm
@@ -163,7 +158,6 @@ const WishlistDetail = () => {
         )}
       </Modal>
 
-      {/* Delete gift confirmation */}
       <Modal open={!!deletingGiftId} onClose={() => setDeletingGiftId(null)} title="Удалить подарок?">
         <p className="mb-4 text-sm text-neutral-700">
           Резервы и вклады по этому подарку будут отменены.

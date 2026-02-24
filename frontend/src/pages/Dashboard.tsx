@@ -1,7 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Plus } from "lucide-react";
 import { wishlistsApi, type Wishlist } from "../api/wishlists.ts";
 import { useToast } from "../hooks/useToast.tsx";
+import { usePolling } from "../hooks/usePolling.ts";
 import Button from "../components/ui/Button.tsx";
 import Modal from "../components/ui/Modal.tsx";
 import WishlistCard from "../components/wishlists/WishlistCard.tsx";
@@ -20,15 +21,13 @@ const Dashboard = () => {
       const { wishlists } = await wishlistsApi.list();
       setWishlists(wishlists);
     } catch {
-      addToast("error", "Не удалось загрузить вишлисты");
+      if (loading) addToast("error", "Не удалось загрузить вишлисты");
     } finally {
       setLoading(false);
     }
-  }, [addToast]);
+  }, [addToast, loading]);
 
-  useEffect(() => {
-    fetchWishlists();
-  }, [fetchWishlists]);
+  usePolling(fetchWishlists, { intervalMs: 15_000 });
 
   const handleCreate = async (data: Parameters<typeof wishlistsApi.create>[0]) => {
     await wishlistsApi.create(data);
@@ -90,7 +89,6 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Create modal */}
       <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Новый вишлист">
         <WishlistForm
           onSubmit={handleCreate}
@@ -99,7 +97,6 @@ const Dashboard = () => {
         />
       </Modal>
 
-      {/* Edit modal */}
       <Modal open={!!editing} onClose={() => setEditing(null)} title="Редактировать вишлист">
         {editing && (
           <WishlistForm
@@ -111,7 +108,6 @@ const Dashboard = () => {
         )}
       </Modal>
 
-      {/* Delete confirmation */}
       <Modal open={!!deleteId} onClose={() => setDeleteId(null)} title="Удалить вишлист?">
         <p className="mb-4 text-sm text-neutral-700">
           Все подарки, резервы и вклады будут удалены безвозвратно.

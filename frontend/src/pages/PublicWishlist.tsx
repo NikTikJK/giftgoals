@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import { publicApi, type PublicGift, type PublicWishlist as PublicWishlistType } from "../api/public.ts";
 import { reservationsApi } from "../api/reservations.ts";
 import { contributionsApi } from "../api/contributions.ts";
 import { useToast } from "../hooks/useToast.tsx";
-import { useAuth } from "../hooks/useAuth.tsx";
+import { usePolling } from "../hooks/usePolling.ts";
 import { formatDate } from "../utils/format.ts";
 import PublicGiftCard from "../components/gifts/PublicGiftCard.tsx";
 import AuthModal from "../components/auth/AuthModal.tsx";
@@ -15,8 +15,6 @@ import { ApiRequestError } from "../api/client.ts";
 const PublicWishlist = () => {
   const { slug } = useParams<{ slug: string }>();
   const { addToast } = useToast();
-  const { user } = useAuth();
-
   const [wishlist, setWishlist] = useState<PublicWishlistType | null>(null);
   const [gifts, setGifts] = useState<PublicGift[]>([]);
   const [role, setRole] = useState<"guest" | "friend" | "owner">("guest");
@@ -34,22 +32,15 @@ const PublicWishlist = () => {
     } catch (err) {
       if (err instanceof ApiRequestError && err.status === 404) {
         setNotFound(true);
-      } else {
+      } else if (loading) {
         addToast("error", "Не удалось загрузить вишлист");
       }
     } finally {
       setLoading(false);
     }
-  }, [slug, addToast]);
+  }, [slug, addToast, loading]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData, user]);
-
-  useEffect(() => {
-    const interval = setInterval(fetchData, 10000);
-    return () => clearInterval(interval);
-  }, [fetchData]);
+  usePolling(fetchData, { intervalMs: 10_000, enabled: !!slug });
 
   const handleReserve = async (giftId: string) => {
     try {
@@ -60,6 +51,7 @@ const PublicWishlist = () => {
       if (err instanceof ApiRequestError) {
         addToast("error", err.code === "CONFLICT" ? "Подарок уже зарезервирован" : err.message);
       }
+      fetchData();
     }
   };
 
@@ -84,6 +76,7 @@ const PublicWishlist = () => {
       if (err instanceof ApiRequestError) {
         addToast("error", err.message);
       }
+      fetchData();
     }
   };
 
@@ -104,7 +97,6 @@ const PublicWishlist = () => {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4">
           <div>
@@ -140,7 +132,6 @@ const PublicWishlist = () => {
         </div>
       </div>
 
-      {/* Gifts */}
       {gifts.length === 0 ? (
         <p className="mt-16 text-center text-neutral-500">В этом вишлисте пока нет подарков</p>
       ) : (

@@ -1,29 +1,27 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Gift, Bell, User, LogOut } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.tsx";
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { notificationsApi } from "../../api/notifications.ts";
+import { usePolling } from "../../hooks/usePolling.ts";
 
 const Header = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [unread, setUnread] = useState(0);
 
-  const fetchUnread = useCallback(async () => {
-    if (!user) return;
-    try {
-      const { unreadCount } = await notificationsApi.list();
-      setUnread(unreadCount);
-    } catch {
-      /* ignore */
-    }
-  }, [user]);
-
-  useEffect(() => {
-    fetchUnread();
-    const interval = setInterval(fetchUnread, 15000);
-    return () => clearInterval(interval);
-  }, [fetchUnread]);
+  usePolling(
+    async () => {
+      if (!user) return;
+      try {
+        const { unreadCount } = await notificationsApi.list();
+        setUnread(unreadCount);
+      } catch {
+        /* ignore */
+      }
+    },
+    { intervalMs: 15_000, enabled: !!user },
+  );
 
   const handleLogout = async () => {
     await logout();
