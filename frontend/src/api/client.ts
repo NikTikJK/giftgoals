@@ -1,4 +1,5 @@
-const BASE = "/api";
+const BASE =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "/api";
 
 export interface ApiError {
   status: number;
