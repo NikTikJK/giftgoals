@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Users ───────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String?
+  displayName  String   @default("")
+  avatarUrl    String?
+  googleId     String?  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wishlists     Wishlist[]
+  reservations  Reservation[]
+  contributions Contribution[]
+  suggestions   Suggestion[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+// ─── Wishlists ───────────────────────────────────────────
+
+model Wishlist {
+  id                 String    @id @default(cuid())
+  ownerId            String
+  title              String
+  description        String?
+  eventDate          DateTime?
+  slug               String    @unique
+  isPublic           Boolean   @default(true)
+  expensiveThreshold Int       @default(500000) // 5 000 ₽ in kopecks
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner       User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  gifts       Gift[]
+  suggestions Suggestion[]
+
+  @@index([ownerId])
+  @@map("wishlists")
+}
+
+// ─── Gifts ───────────────────────────────────────────────
+
+model Gift {
+  id         String  @id @default(cuid())
+  wishlistId String
+  title      String
+  price      Int? // kopecks; null = price not specified
+  productUrl String?
+  imageUrl   String?
+  comment    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wishlist      Wishlist        @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  reservation   Reservation?
+  contributions Contribution[]
+
+  @@index([wishlistId])
+  @@map("gifts")
+}
+
+// ─── Reservations (regular gifts) ────────────────────────
+
+model Reservation {
+  id     String @id @default(cuid())
+  giftId String @unique
+  userId String
+
+  createdAt DateTime @default(now())
+
+  gift Gift @relation(fields: [giftId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("reservations")
+}
+
+// ─── Contributions (expensive gifts) ─────────────────────
+
+model Contribution {
+  id     String @id @default(cuid())
+  giftId String
+  userId String
+  amount Int // kopecks, strictly > 0
+
+  createdAt DateTime @default(now())
+
+  gift Gift @relation(fields: [giftId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([giftId])
+  @@index([userId])
+  @@map("contributions")
+}
+
+// ─── Suggestions (Phase 2) ───────────────────────────────
+
+model Suggestion {
+  id          String           @id @default(cuid())
+  wishlistId  String
+  suggesterId String
+  title       String
+  price       Int?
+  productUrl  String?
+  imageUrl    String?
+  comment     String?
+  status      SuggestionStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wishlist  Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  suggester User     @relation(fields: [suggesterId], references: [id], onDelete: Cascade)
+
+  @@index([wishlistId])
+  @@index([suggesterId])
+  @@map("suggestions")
+}
+
+enum SuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ─── Notifications ───────────────────────────────────────
+
+model Notification {
+  id       String           @id @default(cuid())
+  userId   String
+  type     NotificationType
+  title    String
+  body     String
+  isRead   Boolean          @default(false)
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  RESERVATION_MADE
+  RESERVATION_CANCELLED
+  CONTRIBUTION_MADE
+  UNDERFUNDING_WARNING
+  UNDERFUNDING_DEADLINE
+  SUGGESTION_RECEIVED
+  SUGGESTION_ACCEPTED
+  SUGGESTION_REJECTED
+  COLLECTION_COMPLETE
+}
