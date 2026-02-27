@@ -1,0 +1,45 @@
+# Этап 3 плана: сборка iOS в облаке (Capacitor, симулятор)
+# Запуск: push в main или вручную Actions → Build iOS → Run workflow
+
+name: Build iOS (Capacitor)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install deps & build web
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Sync Capacitor iOS
+        run: |
+          cd frontend
+          npx cap sync ios
+
+      - name: Build for simulator
+        run: |
+          cd frontend/ios/App
+          xcodebuild -scheme App -configuration Debug -sdk iphonesimulator -derivedDataPath build -destination "generic/platform=iOS Simulator" -allowProvisioningUpdates build
+
+      - name: Upload App artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: App-simulator
+          path: frontend/ios/App/build/Build/Products/Debug-iphonesimulator/App.app
